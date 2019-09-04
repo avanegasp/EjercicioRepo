@@ -1,0 +1,75 @@
+<div class="container mt-5">
+	<div *ngIf="waitingForProduct" class="row mt-4">
+		<div class="col">
+			<p class="text-center">Cargando producto...</p>
+		</div>
+	</div>
+
+	<div *ngIf="!waitingForProduct" class="row mt-5">
+		<div class="col text-center">
+			<img src="{{ product.image }}" height="350px" class="img-responsive">
+		</div>
+		<div class="col">
+			<h1>{{ product.name }}</h1>
+			<p><strong>{{ product.brand }}</strong> · {{ product.pet_type }} {{ product.stage }}</p>
+			<p>
+				<span
+				 *ngIf="!product.in_stock"
+				 class="badge badge-danger mx-1"
+				 >
+					No stock
+				</span>
+				<span
+				 *ngIf="product.in_stock"
+				 class="badge badge-success mx-1"
+				 >
+					En stock
+				</span>
+				<span class="badge badge-secondary mx-1">{{ product.product_type }}</span>
+			</p>
+			<p>
+				<a 
+					href=""
+					routerLink="/products-edit/{{ product.id }}"
+					class="text-primary btn btn-link"
+					>
+					editar
+				</a>
+				<button
+					(click)="deleteProduct(product)"
+					class="btn btn-link text-danger"
+					>
+					eliminar
+				</button>
+			</p>
+			<p>{{ product.description }}</p>
+			<div class="table-responsive">
+        <table class="table table-sm">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col">Tamaño</th>
+              <th colspan="1"></th>
+              <th scope="col">SKU</th>
+              <th scope="col">Precio</th>
+              <th scope="col">IVA</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let product_size of product.product_sizes">
+              <td>{{ product_size.size }}</td>
+              <td>
+                <p *ngIf="!product_size.in_stock"><span class="badge badge-danger">No stock</span></p>
+                <p *ngIf="product_size.in_stock"><span class="badge badge-success">En stock</span></p>
+              </td>
+              <td>{{ product_size.sku }}</td>
+              <td>${{ product_size.price | number : '1.0-0' }}</td>
+              <td>{{ product_size.tax }}%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <a href="" routerLink="/products/" class="btn btn-link text-secondary">regresar</a>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,320 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-10 m-auto">
+			<h2 class="text-center">Agregar producto</h2>
+			<form [formGroup]="productForm">
+				<div class="form-group">
+					<label>Nombre</label>
+					<input
+						id="name"
+						class="form-control"
+						type="text"
+						name="name"
+						formControlName="name"
+						required
+						/>
+					<small
+					 	*ngIf="name.invalid && (name.dirty || name.touched)"
+						id="emailErrors"
+						class="form-text text-danger"
+						>
+						<div *ngIf="name.errors.required">
+					    Ingresa un nombre.
+					  </div>
+					  <div *ngIf="name.errors.unique">
+					    Este nombre ya existe.
+					  </div>
+					</small>
+				</div>
+				<div class="form-group">
+					<label>Imagen</label>
+					<input
+						id="image"
+						class="form-control"
+						type="url"
+						name="image"
+						formControlName="image"
+						required
+						/>
+					<small
+					 	*ngIf="image.invalid && (image.dirty || image.touched)"
+						id="imageErrors"
+						class="form-text text-danger"
+						>
+						<div *ngIf="image.errors.required">
+					    Ingresa una imagen.
+					  </div>
+					</small>
+				</div>
+				<div class="form-group">
+					<label>Descripción</label>
+					<textarea
+						id="description"
+						class="form-control"
+						type="textarea"
+						rows="7"
+						name="description"
+						formControlName="description"
+						required
+						>
+					</textarea>
+					<small
+					 	*ngIf="description.invalid && (description.dirty || description.touched)"
+						id="descriptionErrors"
+						class="form-text text-danger"
+						>
+						<div *ngIf="description.errors.required">
+					    Ingresa una descripción.
+					  </div>
+					</small>
+				</div>
+				<div class="form-group">
+					<label>Etapa</label>
+					<input
+						id="stage"
+						class="form-control"
+						type="url"
+						name="stage"
+						formControlName="stage"
+						required
+						/>
+					<small
+					 	*ngIf="stage.invalid && (stage.dirty || stage.touched)"
+						id="stageErrors"
+						class="form-text text-danger"
+						>
+						<div *ngIf="stage.errors.required">
+					    Ingresa una etapa.
+					  </div>
+					</small>
+				</div>
+				<div class="form-group">
+			    <label for="petTypeId">Tipo de mascota</label>
+			    <select
+			    	class="form-control"
+			    	id="petTypeId"
+			    	name="petTypeId"
+			    	formControlName="petTypeId"
+			    	(change)="petTypeSelected($event.target.value)"
+			    	>
+			    	<option value="0" disabled>Elige un tipo de mascota</option>
+			    	<option [value]="petType.id" *ngFor="let petType of petTypes">
+			    		{{petType.name}}
+			    	</option>
+			    </select>
+			    <small
+					 	*ngIf="petTypeId.invalid && (petTypeId.dirty || petTypeId.touched)"
+						id="petTypeIdErrors"
+						class="form-text text-danger"
+						>
+						<div *ngIf="petTypeId.errors.required">
+					    Elige un tipo de mascota.
+					  </div>
+					</small>
+			  </div>
+			  <div class="form-group">
+			    <label for="productTypeId">Tipo de producto</label>
+			    <select class="form-control" *ngIf="waitingForProductTypes">
+			    	<option selected>cargando...</option>
+			    </select>
+			    <select
+			     	*ngIf="!waitingForProductTypes" 
+			    	class="form-control"
+			    	id="productTypeId"
+			    	name="productTypeId"
+			    	formControlName="productTypeId"
+			    	>
+			    	<option value="0" disabled>Elige un tipo de producto</option>
+			    	<option [value]="productType.id" *ngFor="let productType of productTypes">
+			    		{{productType.name}}
+			    	</option>
+			    </select>
+			    <small
+					 	*ngIf="productTypeId.invalid && (productTypeId.dirty || productTypeId.touched)"
+						id="productTypeIdErrors"
+						class="form-text text-danger"
+						>
+						<div *ngIf="productTypeId.errors.required">
+					    Elige un tipo de producto.
+					  </div>
+					</small>
+			  </div>
+			  <div class="form-group">
+			    <label for="brandId">Marca</label>
+			    <select class="form-control" *ngIf="waitingForBrands">
+			    	<option selected>cargando...</option>
+			    </select>
+			    <select
+			     	*ngIf="!waitingForBrands" 
+			    	class="form-control"
+			    	id="brandId"
+			    	name="brandId"
+			    	formControlName="brandId"
+			    	>
+			    	<option value="0" disabled>Elige una marca</option>
+			    	<option [value]="brand.id" *ngFor="let brand of brands">
+			    		{{brand.name}}
+			    	</option>
+			    </select>
+			    <small
+					 	*ngIf="brandId.invalid && (brandId.dirty || brandId.touched)"
+						id="brandIdErrors"
+						class="form-text text-danger"
+						>
+						<div *ngIf="brandId.errors.required">
+					    Elige una marca.
+					  </div>
+					</small>
+			  </div>
+
+				<div formArrayName="sizes">
+					<h3>Presentaciones</h3>
+	      	<div *ngFor="let size of sizes.controls; let i=index">
+	          <div [formGroupName]="i" class="form-row align-items-center">
+							<div class="form-group col-md-2">
+								<input
+									id="sku"
+									class="form-control"
+									type="url"
+									name="sku"
+									formControlName="sku"
+									placeholder="sku"
+									required
+									/>
+								<small
+								 	*ngIf="sizes.controls[i].controls.sku.invalid && (sizes.controls[i].controls.sku.dirty || sizes.controls[i].controls.sku.touched)"
+									id="skuErrors"
+									class="form-text text-danger"
+									>
+									<div *ngIf="sizes.controls[i].controls.sku.errors.required">
+								    Ingresa un sku.
+								  </div>
+								</small>
+							</div>
+							<div class="form-group col-md-3">
+								<input
+									id="size"
+									class="form-control"
+									type="text"
+									name="size"
+									formControlName="size"
+									placeholder="tamaño"
+									required
+									/>
+								<small
+								 	*ngIf="sizes.controls[i].controls.size.invalid && (sizes.controls[i].controls.size.dirty || sizes.controls[i].controls.size.touched)"
+									id="sizeErrors"
+									class="form-text text-danger"
+									>
+									<div *ngIf="sizes.controls[i].controls.size.errors.required">
+								    Ingresa un tamaño.
+								  </div>
+								</small>
+							</div>
+							<div class="form-group col-md-2">
+								<div class="form-check">
+								  <input
+								  	id="inStock"
+								  	class="form-check-input"
+								  	type="checkbox"
+								  	name="inStock"
+								  	formControlName="inStock"
+								  	>
+								  <label class="form-check-label" for="inStock">
+								    En Stock
+								  </label>
+								</div>
+							</div>
+							<div class="form-group col-md-2">
+								<input
+									id="price"
+									class="form-control"
+									type="number"
+									name="price"
+									formControlName="price"
+									placeholder="precio"
+									required
+									/>
+								<small
+								 	*ngIf="sizes.controls[i].controls.price.invalid && (sizes.controls[i].controls.price.dirty || sizes.controls[i].controls.price.touched)"
+									id="priceErrors"
+									class="form-text text-danger"
+									>
+									<div *ngIf="sizes.controls[i].controls.price.errors.required">
+								    Ingresa un precio.
+								  </div>
+								</small>
+							</div>
+							<div class="form-group col-md-2">
+								<input
+									id="tax"
+									class="form-control"
+									type="number"
+									name="tax"
+									formControlName="tax"
+									placeholder="IVA (%)"
+									required
+									/>
+								<small
+								 	*ngIf="sizes.controls[i].controls.tax.invalid && (sizes.controls[i].controls.tax.dirty || sizes.controls[i].controls.tax.touched)"
+									id="skuErrors"
+									class="form-text text-danger"
+									>
+									<div *ngIf="sizes.controls[i].controls.tax.errors.required">
+								    Ingresa el porcentaje de IVA.
+								  </div>
+								</small>
+							</div>
+
+							<div class="form-group col-md-1">
+	              <button
+	               	(click)="removeSize(i)"
+	               	class="btn btn-sm btn-link text-danger"
+	              	>
+	              	quitar
+	              </button> 
+            	</div>
+	          </div>
+	      	</div>
+	      	<button
+           	(click)="addSize()"
+           	class="btn btn-sm btn-link"
+          	>
+          	agregar presentación
+	        </button>
+				</div>
+
+				<p>
+				  <ngb-alert *ngIf="showErrorMessage" (close)="showErrorMessage = false">
+				    <strong>¡Error!</strong> {{ errorMessage }}
+				  </ngb-alert>
+				</p>
+
+				<div class="form-row">
+					<div class="form-group mt-3 col-3" *ngIf="waitingForCreateProduct">
+						<button
+						 class="btn btn-primary"
+						 [disabled]="true"
+						  >
+							...
+						</button>
+					</div>
+					<div class="form-group mt-3 col-3" *ngIf="!waitingForCreateProduct">
+						<button
+						 type="submit"
+						 class="btn btn-primary"
+						 (click)="onSubmit()"
+						 [disabled]="!productForm.valid"
+						  >
+							Crear producto
+						</button>
+					</div>
+					<div class="form-group mt-3 col-7">
+						<a href="" routerLink="/products/" class="btn btn-link text-secondary">cancelar</a>
+					</div>	
+				</div>
+				
+			</form>
+		</div>
+	</div>	
+</div>

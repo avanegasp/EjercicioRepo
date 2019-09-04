@@ -1,0 +1,26 @@
+<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">
+  	<img src="assets/images/logo.png" height="70" alt="">
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav ml-auto">
+    	<li class="nav-item" *ngIf="tokenService.userSignedIn()">
+        <a class="nav-link" href="" routerLink="products">
+          Productos
+        </a>
+      </li>
+      <li class="nav-item" *ngIf="tokenService.userSignedIn()">
+      	<button 
+      		class="nav-link btn btn-sm btn-outline-danger text-danger my-sm-0"
+      		(click)="logout()"
+      		>
+      		Salir
+      	</button>
+      </li>
+    </ul>
+  </div>
+</nav>
